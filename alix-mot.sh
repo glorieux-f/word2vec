@@ -5,7 +5,7 @@ if [ $# -eq 0 ]; then
 fi
 
 window=5
-size=30
+size=50
 hs=0 # not needed, https://medium.com/@gridflowai/optimizing-word2vec-with-hierarchical-softmax-a9d46ebe545a
 cbow=1 # cbow better for small corpus
 
