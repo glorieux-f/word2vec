@@ -10,10 +10,10 @@ hs=0 # not needed, https://medium.com/@gridflowai/optimizing-word2vec-with-hiera
 cbow=1 # cbow better for small corpus
 
 train="$1"
-output="${train%.*}"-win$window-size$size-cbow$cbow-hs$hs.bin 
+output="${train%.*}".bin 
 echo "$output"
 if [ ! -e $output ]; then
-    # -negative is needed
+    # -negative is needed, but not too much, will put some words too high
     # -sample 1e-4 will keep important frequent word
     time ./word2vec -train $train -output $output -cbow $cbow -size $size -window $window -negative 5 -hs $hs -sample 1e-4 -threads 20 -binary 1 -iter 50 #  -min-count 2 
 fi
