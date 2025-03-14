@@ -10,11 +10,13 @@ output="${train%.*}".bin
 echo "$output"
 # if [ ! -e $output ]; then
     # window=5 best for semantic
-    # size=50
+    # -sample 0
+    # -size 100, more wil scatter words, less lose definition
     # hs=0 # not needed, https://medium.com/@gridflowai/optimizing-word2vec-with-hierarchical-softmax-a9d46ebe545a
     # cbow=1 # cbow better for small corpus
-    # -negative is needed, but not too much, will put some words too high
+    # negative=5 is needed, but not too much, will put some rare words too high
     # -sample 1e-4 will keep important frequent word
-    time ./word2vec -train $train -output $output -cbow 1 -size 100 -window 5 -negative 5 -hs 0 -sample 1e-4 -threads 20 -binary 1 -iter 50 #  -min-count 2 
+    # iter=50, needed for smal corpus
+    time ./word2vec -train $train -output $output -binary 1 -alpha 0.025 -negative 10 -iter 50  -min-count 10
 # fi
 ./distance $output
