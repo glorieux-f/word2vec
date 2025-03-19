@@ -1,22 +1,19 @@
 make
-if [ $# -eq 0 ]; then
-    echo "A text file needed for train"
-    exit 128
-fi
-
-
-train="$1"
-output="${train%.*}".bin 
-echo "$output"
-# if [ ! -e $output ]; then
-    # window=5 best for semantic
-    # -sample 0
-    # -size 100, more wil scatter words, less lose definition
-    # hs=0 # not needed, https://medium.com/@gridflowai/optimizing-word2vec-with-hierarchical-softmax-a9d46ebe545a
-    # cbow=1 # cbow better for small corpus
-    # negative=5 is needed, but not too much, will put some rare words too high
-    # -sample 1e-4 will keep important frequent word
-    # iter=50, needed for smal corpus
-    time ./word2vec -train $train -output $output -binary 1 -alpha 0.025 -negative 10 -iter 50  -min-count 10
-# fi
-./distance $output
+for train in "$@"
+do
+    output="${train%.*}".bin 
+    echo "$output"
+    # if [ ! -e $output ]; then
+        # Corpus is clean : lemma, no grammatical words, no unknown words
+        # -binary 1 — binary format is more compact
+        # -window 5 — best for semantic
+        # -iter 50 — needed for smal corpus
+        # -sample 1e-3 — useful with frequent stop words, not here, bad with 1e-5
+        # -size 100 — default, correct for 4 Mwords
+        # -hs 0 — not needed, https://medium.com/@gridflowai/optimizing-word2vec-with-hierarchical-softmax-a9d46ebe545a
+        # -cbow 1 — skip-gram has not prove accuracy
+        # -min-count 5 — default is 5  
+        # -negative 10 — default is 5, slow down training but improve accuracy
+        time ./word2vec -train $train -output $output -binary 1 -alpha 0.025 -iter 50 -negative 10
+    # fi
+done
