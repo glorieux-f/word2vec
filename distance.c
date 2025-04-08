@@ -137,7 +137,7 @@ int main(int argc, char **argv) {
         }
       }
     }
-    for (a = 0; a < N; a++) printf("%s\t%f\n", bestw[a], bestd[a]);
+    for (a = 0; a < N; a++) printf("%lld.\t%s\t%f\n", a, bestw[a], bestd[a]);
   }
   return 0;
 }
